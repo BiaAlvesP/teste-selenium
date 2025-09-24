@@ -1,24 +1,26 @@
 package org.example;
 
 import org.junit.Test;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
-public class TesteGoogle {
+public class TesteGoogle extends Base{
 
     @Test
     public void testeFirefox() {
-        System.setProperty("webdriver.gecko.driver", "C:\\gecko\\geckodriver-v0.36.0-win32\\geckodriver.exe");
-
-        FirefoxOptions options = new FirefoxOptions();
-        options.setBinary("C:\\Program Files\\Mozilla Firefox\\firefox.exe");
-
-        WebDriver driver = new FirefoxDriver(options);
+        iniciarDriver();
         driver.get("https://www.google.com");
         System.out.println("Título (Firefox): " + driver.getTitle());
+
+
+        // tamanho da tela
+      //  driver.manage().window().setSize(new Dimension (1200,765));
+
+        // fecha o driver (melhor que close)
         driver.quit();
     }
 
