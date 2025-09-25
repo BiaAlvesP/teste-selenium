@@ -18,17 +18,8 @@ public class Base {
         // Caminho do Firefox.exe no seu computador
         options.setBinary("C:\\Program Files\\Mozilla Firefox\\firefox.exe"); // ajuste se o seu estiver em outro caminho
 
-        // Aqui você pode adicionar outras opções, se quiser
-        // options.addArguments("--start-maximized"); // abre maximizado
-        // options.addArguments("--headless"); // modo sem GUI
-
         // Cria o driver
         driver = new FirefoxDriver(options);
-    }
 
-//    public void fecharDriver() {
-//        if (driver != null) {
-//            driver.quit();
-//        }
-//    }
+    }
 }

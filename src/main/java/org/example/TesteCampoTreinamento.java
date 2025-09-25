@@ -1,115 +1,89 @@
 package org.example;
 
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.Select;
-
 import java.util.List;
+
 
 public class TesteCampoTreinamento extends Base {
 
+    @Before
+    public void Iniciando() {
+        iniciarDriver();
+        driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+        dsl = new DSL(driver);
+    }
+
+    @After
+    public void finalizando() {
+        driver.quit();
+    }
+
+
+    private DSL dsl;
+
+
     @Test
     public void testeTextField() {
-        iniciarDriver();
-
-        driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
 
         //seleciono o elemento com que quero mexer
-        //sendKeys = faz escrever no campo
-        driver.findElement(By.id("elementosForm:nome")).sendKeys("Teste de escrita");
+        dsl.escrever("elementosForm:nome", "Teste de escrita");
+
 
         //Para confirmar que o texto foi mesmo escrito,usamos o Attribute "value" que retorna o valor que foi escrito
-        Assert.assertEquals("Teste de escrita", driver.findElement(By.id("elementosForm:nome")).getAttribute("value"));
+        Assert.assertEquals("Teste de escrita", dsl.obterValorCampo("elementosForm:nome"));
 
-
-        driver.quit();
     }
 
     @Test
     public void deveInteragirComTextoArea() {
-        iniciarDriver();
-
-        driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
 
         //seleciono o elemento com que quero mexer
-        //sendKeys = faz escrever no campo
-        driver.findElement(By.id("elementosForm:sugestoes")).sendKeys("teste"); // no textArea, posso escrever mais de uma linha "teste\nqa\ntestesss"
+        dsl.escrever("elementosForm:sugestoes", "teste");
 
         //Para confirmar que retorna o valor que foi escrito
-        Assert.assertEquals("teste", driver.findElement(By.id("elementosForm:sugestoes")).getAttribute("value"));
+        Assert.assertEquals("teste", dsl.obterValorCampo("elementosForm:sugestoes"));
 
-
-        driver.quit();
     }
 
     @Test
     public void deveInteragirComRadioButton() {
-        iniciarDriver();
 
-        driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
-
-        //seleciono o elemento com que quero mexer
-        driver.findElement(By.id("elementosForm:sexo:0")).click();
-
-
-        Assert.assertTrue(driver.findElement(By.id("elementosForm:sexo:0")).isSelected());
-
-
-        driver.quit();
+        dsl.clicar("elementosForm:sexo:0");
+        Assert.assertTrue(dsl.checarClick("elementosForm:sexo:0"));
     }
 
     @Test
     public void deveInteragirComCheckbox() {
-        iniciarDriver();
-
-        driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
-
-        //seleciono o elemento com que quero mexer
-        //sendKeys = faz escrever no campo
-        driver.findElement(By.id("elementosForm:comidaFavorita:2")).click();
-
-        Assert.assertTrue(driver.findElement(By.id("elementosForm:comidaFavorita:2")).isSelected());
 
 
-        driver.quit();
+        dsl.clicar("elementosForm:comidaFavorita:2");
+
+        Assert.assertTrue(dsl.checarClick("elementosForm:comidaFavorita:2"));
     }
 
     @Test
     public void deveInteragirComCombo() {
-        iniciarDriver();
 
-        driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
-
-        //seleciono o elemento com que quero mexer
-        //sendKeys = faz escrever no campo
-        WebElement element = driver.findElement(By.id("elementosForm:escolaridade"));
-        Select combo = new Select(element);
-        // combo.selectByIndex(4); // por index
-//          combo.selectByValue("superior"); // pelo value
-        combo.selectByVisibleText("Superior"); // mais legal usar esse, porque é como o usuário visualiza
+        dsl.selecionarCombo("elementosForm:escolaridade", "Superior");
 
         //Para validar o valor utilizado
-        Assert.assertEquals("Superior", combo.getFirstSelectedOption().getText());
+        Assert.assertEquals("Superior", dsl.obterValorCombo("elementosForm:escolaridade"));
 
-
-        driver.quit();
     }
 
 
     //Para verificar os valores disponiveis no Combo
     @Test
     public void verificarValoresDisponiveis() {
-        iniciarDriver();
 
-        driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
 
         //seleciono o elemento com que quero mexer
-        //sendKeys = faz escrever no campo
         WebElement element = driver.findElement(By.id("elementosForm:escolaridade"));
         Select combo = new Select(element);
         List<WebElement> options = combo.getOptions();
@@ -127,17 +101,16 @@ public class TesteCampoTreinamento extends Base {
         Assert.assertTrue(encontrou); //Para saber se há um item especifico
 
 
-        driver.quit();
     }
 
 
     @Test
     public void deveSelecionarMultiplos() {
-        iniciarDriver();
 
-        driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+        dsl.selecionarCombo("elementosForm:esportes", "Natacao");
+        dsl.selecionarCombo("elementosForm:esportes", "Futebol");
+        dsl.selecionarCombo("elementosForm:esportes", "Corrida");
 
-        //seleciono o elemento com que quero mexer
         WebElement element = driver.findElement(By.id("elementosForm:esportes"));
         Select combo = new Select(element);
 
@@ -153,54 +126,37 @@ public class TesteCampoTreinamento extends Base {
         allSelectedOptions = combo.getAllSelectedOptions();
         Assert.assertEquals(2, allSelectedOptions.size());
 
-        driver.quit();
     }
 
 
     @Test
     public void deveInteragirComBotoes() {
-        iniciarDriver();
 
-        driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
-
-        //seleciono o elemento com que quero mexer
+        dsl.clicar("buttonSimple");
 
         WebElement button = driver.findElement(By.id("buttonSimple"));
 
-        button.click();
-
         Assert.assertEquals("Obrigado!", button.getAttribute("value"));
 
-        driver.quit();
     }
 
     @Test
     public void deveInteragirComLink() {
-        iniciarDriver();
 
-        driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+        dsl.clicarLink("Voltar");
 
-        //seleciono o elemento com que quero mexer
-
-        driver.findElement(By.linkText("Voltar")).click();
-
-        Assert.assertEquals("Voltou!",driver.findElement(By.id("resultado")).getText());
-
-
-        driver.quit();
+        Assert.assertEquals("Voltou!", dsl.obterText("resultado"));
     }
 
     @Test
     public void deveBuscarTextos() {
-        iniciarDriver();
 
-        driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
 
-       Assert.assertEquals("Campo de Treinamento",driver.findElement(By.tagName("h3")).getText());
+        Assert.assertEquals("Campo de Treinamento", dsl.obterTexto(By.tagName("h3")));
 
-        Assert.assertEquals("Cuidado onde clica, muitas armadilhas...",driver.findElement(By.className("facilAchar")).getText());
+        Assert.assertEquals("Cuidado onde clica, muitas armadilhas...", dsl.obterTexto(By.tagName("facilAchar")));
 
-        driver.quit();
+
     }
 
 }

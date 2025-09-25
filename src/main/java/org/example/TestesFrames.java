@@ -1,17 +1,29 @@
 package org.example;
 
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 
 public class TestesFrames extends Base {
 
+    @Before
+    public void Iniciando() {
+        iniciarDriver();
+        driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+
+    }
+
+    @After
+    public void finalizando() {
+        driver.quit();
+    }
+
 
     @Test
     public void deveInteragirComFrames() {
-        iniciarDriver();
-        driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
 
 
         driver.switchTo().frame("frame1");
@@ -28,14 +40,12 @@ public class TestesFrames extends Base {
         driver.switchTo().defaultContent();
         driver.findElement(By.id("elementosForm:nome")).sendKeys(msg);
 
-        driver.quit();
+
 
     }
 
     @Test
     public void deveInteragirComJanelas() {
-        iniciarDriver();
-        driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
 
         driver.findElement(By.id("buttonPopUpEasy")).click();
 
@@ -49,8 +59,6 @@ public class TestesFrames extends Base {
 
     @Test
     public void deveInteragirComJanelas2() {
-        iniciarDriver();
-        driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
 
         driver.findElement(By.id("buttonPopUpHard")).click();
 
@@ -62,7 +70,6 @@ public class TestesFrames extends Base {
         driver.switchTo().window((String) driver.getWindowHandles().toArray()[0]);
         driver.findElement(By.tagName("textarea")).sendKeys(("e agora?"));
 
-        driver.quit();
 
     }
 }

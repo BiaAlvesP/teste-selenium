@@ -1,19 +1,34 @@
 package org.example;
 
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+
 public class DesafioRegrasNegocio extends Base {
+
+    @Before
+    public void Iniciando() {
+        iniciarDriver();
+
+        driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+
+    }
+
+    @After
+    public void finalizando() {
+        driver.quit();
+
+    }
 
     @Test
     public void desafioRegraNegocio() {
 
-        iniciarDriver();
-        driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
 
         // erro nome
         driver.findElement(By.id("elementosForm:cadastrar")).click();
@@ -72,7 +87,7 @@ public class DesafioRegrasNegocio extends Base {
 
         driver.findElement(By.id("elementosForm:cadastrar")).click();
 
-        driver.quit();
+
     }
 
 

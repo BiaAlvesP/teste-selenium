@@ -1,6 +1,8 @@
 package org.example;
 
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -10,12 +12,22 @@ import java.util.List;
 
 public class DesafioCadastroCompleto extends Base {
 
+    @Before
+    public void Iniciando() {
+        iniciarDriver();
+        driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+
+    }
+
+    @After
+    public void finalizando() {
+        driver.quit();
+    }
+
     @Test
     public void cadastroCompleto() {
 
         // Inicializando
-        iniciarDriver();
-        driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
 
         //nome
         driver.findElement(By.id("elementosForm:nome")).sendKeys("Bianca");
@@ -54,8 +66,6 @@ public class DesafioCadastroCompleto extends Base {
         driver.findElement(By.id("elementosForm:cadastrar")).click();
 
      Assert.assertEquals("Cadastrado!\nNome: Bianca\nSobrenome: Alves Pinheiro\nSexo: Feminino\nComida: Pizza\nEscolaridade: 2graucomp\nEsportes: Natacao Corrida\nSugestoes:", driver.findElement(By.id("resultado")).getText());
-
-
 
 
     }

@@ -1,14 +1,9 @@
-package org.example;
+package org.example.Primeiros_Testes;
 
+import org.example.Base;
 import org.junit.Test;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
 
-public class TesteGoogle extends Base{
+public class TesteGoogle extends Base {
 
     @Test
     public void testeFirefox() {
