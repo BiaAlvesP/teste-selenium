@@ -4,16 +4,17 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 
 public class TestesFrames extends Base {
+
+    private DSL dsl;
 
     @Before
     public void Iniciando() {
         iniciarDriver();
         driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
-
+        dsl = new DSL(driver);
     }
 
     @After
@@ -25,21 +26,16 @@ public class TestesFrames extends Base {
     @Test
     public void deveInteragirComFrames() {
 
+        dsl.entrarFrame("frame1");
 
-        driver.switchTo().frame("frame1");
+        dsl.clicar("frameButton");
 
-        driver.findElement(By.id("frameButton")).click();
-
-        Alert alert = driver.switchTo().alert();
-        String msg = alert.getText();
+        String msg = dsl.alertaObterTextoEAceita();
 
         Assert.assertEquals("Frame OK!", msg);
 
-        alert.accept();
-
-        driver.switchTo().defaultContent();
-        driver.findElement(By.id("elementosForm:nome")).sendKeys(msg);
-
+        dsl.sairFrame();
+        dsl.escrever(By.id("elementosForm:nome"), msg);
 
 
     }
@@ -47,28 +43,28 @@ public class TestesFrames extends Base {
     @Test
     public void deveInteragirComJanelas() {
 
-        driver.findElement(By.id("buttonPopUpEasy")).click();
+        dsl.clicar("buttonPopUpEasy");
 
-        driver.switchTo().window("Popup"); // nem todos os popup tem indentificados
-        driver.findElement(By.tagName("textarea")).sendKeys("Deu certo?");
-        driver.close();
+        dsl.mudarJanela("Popup");
+        dsl.escrever(By.tagName("textarea"), "Deu certo?");
 
-        driver.quit();
+       dsl.fecharFrame();
+
 
     }
 
     @Test
     public void deveInteragirComJanelas2() {
 
-        driver.findElement(By.id("buttonPopUpHard")).click();
+        dsl.clicar("buttonPopUpHard");
 
         System.out.println(driver.getWindowHandle()); // janela atual
         System.out.println(driver.getWindowHandles());// todas as janelas
 
-        driver.switchTo().window((String) driver.getWindowHandles().toArray()[1]);
-        driver.findElement(By.tagName("textarea")).sendKeys(("Deu certo?"));
-        driver.switchTo().window((String) driver.getWindowHandles().toArray()[0]);
-        driver.findElement(By.tagName("textarea")).sendKeys(("e agora?"));
+        dsl.mudarJanela((String) driver.getWindowHandles().toArray()[1]);
+        dsl.escrever(By.tagName("textarea"), "Deu certo?");
+        dsl.mudarJanela((String) driver.getWindowHandles().toArray()[0]);
+        dsl.escrever(By.tagName("textarea"), "e agora?");
 
 
     }

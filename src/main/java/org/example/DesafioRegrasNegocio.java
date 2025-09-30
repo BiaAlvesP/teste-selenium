@@ -4,21 +4,28 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 
 public class DesafioRegrasNegocio extends Base {
 
+    private CampoTreinamentoPage page;
+    private WebDriverWait wait;
+    private DSL dsl;
+
     @Before
     public void Iniciando() {
         iniciarDriver();
-
         driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        dsl = new DSL(driver);
+        page = new CampoTreinamentoPage(driver);
 
     }
+
 
     @After
     public void finalizando() {
@@ -31,62 +38,48 @@ public class DesafioRegrasNegocio extends Base {
 
 
         // erro nome
-        driver.findElement(By.id("elementosForm:cadastrar")).click();
+        page.cadastrar();
+        Assert.assertEquals("Nome eh obrigatorio", dsl.alertaObterTextoEAceita());
 
-        Alert alert = driver.switchTo().alert();
-        Assert.assertEquals("Nome eh obrigatorio", alert.getText());
-        alert.accept();
-
-        driver.findElement(By.id("elementosForm:nome")).sendKeys("Bianca");
+        page.setNome("Bianca");
 
         // erro sobrenome
-        driver.findElement(By.id("elementosForm:cadastrar")).click();
+        page.cadastrar();
+        Assert.assertEquals("Sobrenome eh obrigatorio", dsl.alertaObterTextoEAceita());
 
-        alert = driver.switchTo().alert();
-        Assert.assertEquals("Sobrenome eh obrigatorio", alert.getText());
-        alert.accept();
-
-        driver.findElement(By.id("elementosForm:sobrenome")).sendKeys("Alves");
+        page.setSobrenome("Alves");
 
 
         // erro sexo
-        driver.findElement(By.id("elementosForm:cadastrar")).click();
+        page.cadastrar();
 
-        alert = driver.switchTo().alert();
-        Assert.assertEquals("Sexo eh obrigatorio", alert.getText());
-        alert.accept();
+        Assert.assertEquals("Sexo eh obrigatorio", dsl.alertaObterTextoEAceita());
 
-        driver.findElement(By.id("elementosForm:sexo:1")).click();
+        page.setSexoFeminino();
 
         //erro carne + vegetariano
-        driver.findElement(By.id("elementosForm:comidaFavorita:0")).click();
-        driver.findElement(By.id("elementosForm:comidaFavorita:3")).click();
+        page.setComidaFavoritaCarne();
+        page.setComidaFavoritaVegetariano();
 
-        driver.findElement(By.id("elementosForm:cadastrar")).click();
+        page.cadastrar();
 
-        alert = driver.switchTo().alert();
-        Assert.assertEquals("Tem certeza que voce eh vegetariano?", alert.getText());
-        alert.accept();
+        Assert.assertEquals("Tem certeza que voce eh vegetariano?", dsl.alertaObterTextoEAceita());
 
-        driver.findElement(By.id("elementosForm:comidaFavorita:3")).click();
+
+        page.setComidaFavoritaVegetariano();
+
 
         //erro esporte
-        WebElement element = driver.findElement(By.id("elementosForm:esportes"));
-        Select combo = new Select(element);
+        page.setEsportes("Natacao","O que eh esporte?");
 
-        combo.selectByVisibleText("Natacao");
-        combo.selectByVisibleText("O que eh esporte?");
+        page.cadastrar();
 
-        driver.findElement(By.id("elementosForm:cadastrar")).click();
 
-        alert = driver.switchTo().alert();
-        Assert.assertEquals("Voce faz esporte ou nao?", alert.getText());
-        alert.accept();
+        Assert.assertEquals("Voce faz esporte ou nao?", dsl.alertaObterTextoEAceita());
 
-        combo.deselectByVisibleText("O que eh esporte?");
+        dsl.deSelecionarCombo("elementosForm:esportes", "O que eh esporte?");
 
-        driver.findElement(By.id("elementosForm:cadastrar")).click();
-
+        page.cadastrar();
 
     }
 
