@@ -1,16 +1,19 @@
-package org.example;
+package br.ce.wcaquino.test;
 
+import br.ce.wcaquino.core.BaseTest;
+import br.ce.wcaquino.core.DSL;
+import br.ce.wcaquino.core.DriverFactory;
+import br.ce.wcaquino.page.CampoTreinamentoPage;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
 
-public class DesafioRegrasNegocio extends Base {
+public class DesafioRegrasNegocio extends BaseTest {
 
     private CampoTreinamentoPage page;
     private WebDriverWait wait;
@@ -18,46 +21,40 @@ public class DesafioRegrasNegocio extends Base {
 
     @Before
     public void Iniciando() {
-        iniciarDriver();
-        driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
-        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        dsl = new DSL(driver);
-        page = new CampoTreinamentoPage(driver);
+        DriverFactory.getDriver().get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+        wait = new WebDriverWait( DriverFactory.getDriver(), Duration.ofSeconds(5));
+        dsl = new DSL();
+        page = new CampoTreinamentoPage();
 
     }
 
 
-    @After
-    public void finalizando() {
-        driver.quit();
-
-    }
 
     @Test
     public void desafioRegraNegocio() {
 
 
-        // erro nome
+        // Erro nome obrigatório
         page.cadastrar();
         Assert.assertEquals("Nome eh obrigatorio", dsl.alertaObterTextoEAceita());
 
         page.setNome("Bianca");
 
-        // erro sobrenome
+        // erro sobrenome obrigatório
         page.cadastrar();
         Assert.assertEquals("Sobrenome eh obrigatorio", dsl.alertaObterTextoEAceita());
 
         page.setSobrenome("Alves");
 
 
-        // erro sexo
+        // erro sexo obrigatório
         page.cadastrar();
 
         Assert.assertEquals("Sexo eh obrigatorio", dsl.alertaObterTextoEAceita());
 
         page.setSexoFeminino();
 
-        //erro carne + vegetariano
+        //erro ao escolher carne, não se pode selecionar vegetariano
         page.setComidaFavoritaCarne();
         page.setComidaFavoritaVegetariano();
 
@@ -69,7 +66,7 @@ public class DesafioRegrasNegocio extends Base {
         page.setComidaFavoritaVegetariano();
 
 
-        //erro esporte
+        //erro esporte 1 opção que faz e outra não
         page.setEsportes("Natacao","O que eh esporte?");
 
         page.cadastrar();

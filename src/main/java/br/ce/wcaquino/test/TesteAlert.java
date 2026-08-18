@@ -1,5 +1,7 @@
-package org.example;
+package br.ce.wcaquino.test;
 
+import br.ce.wcaquino.core.DSL;
+import br.ce.wcaquino.core.DriverFactory;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -9,7 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class TesteAlert extends Base {
+public class TesteAlert {
 
     private WebDriverWait wait;
 
@@ -17,16 +19,15 @@ public class TesteAlert extends Base {
 
     @Before
     public void Iniciando() {
-        iniciarDriver();
-        driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
-        dsl = new DSL(driver);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(5)); // inicializa aqui
+        DriverFactory.getDriver().get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+        dsl = new DSL();
+        wait = new WebDriverWait(DriverFactory.getDriver(), Duration.ofSeconds(5)); // inicializa aqui
 
     }
 
     @After
     public void finalizando() {
-        driver.quit();
+        DriverFactory.killDriver();
     }
 
     @Test
@@ -51,7 +52,7 @@ public class TesteAlert extends Base {
         Assert.assertEquals("Confirmado", dsl.alertaObterTextoEAceita());
 
         // abrir de novo o confirm
-        driver.findElement(By.id("confirm")).click();
+        DriverFactory.getDriver().findElement(By.id("confirm")).click();
 
         // primeiro alerta
 

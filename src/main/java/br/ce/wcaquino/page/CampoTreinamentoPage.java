@@ -1,14 +1,11 @@
-package org.example;
+package br.ce.wcaquino.page;
 
+import br.ce.wcaquino.core.BasePage;
+import br.ce.wcaquino.core.DSL;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 
-public class CampoTreinamentoPage {
-    private DSL dsl;
+public class CampoTreinamentoPage extends BasePage {
 
-    public CampoTreinamentoPage(WebDriver driver) {
-        dsl = new DSL(driver);
-    }
 
     public void setNome(String nome) {
         dsl.escrever(By.id("elementosForm:nome"), nome);
