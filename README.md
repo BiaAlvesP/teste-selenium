@@ -73,9 +73,11 @@ src/main/java/br/ce/wcaquino/
     └── SuiteTestes.java        # Execução orquestrada de múltiplas classes de teste
 
 src/main/resources/
-├── componentes.html    # Aplicação de treino (Campo de Treinamento)
-└── frame.html           # Página usada nos testes de iframe
+├── componentes.html    # Aplicação de treino (Campo de Treinamento) — não incluída no repositório*
+└── frame.html           # Página usada nos testes de iframe — não incluída no repositório*
 ```
+
+\* Ver seção [Sobre os arquivos HTML de treino](#-sobre-os-arquivos-html-de-treino) abaixo.
 
 ---
 
@@ -118,6 +120,8 @@ Documentar bugs conscientemente identificados, mesmo sem correção imediata, fa
 
 Pré-requisitos: Java 23, Maven, Chrome instalado.
 
+⚠️ **Importante:** este projeto depende dos arquivos HTML, que fazem parte do material do curso e **não estão incluídos neste repositório** (ver seção abaixo). Sem eles, os testes não rodam localmente.
+
 ```bash
 # Rodar todos os testes
 mvn test
@@ -127,6 +131,14 @@ mvn test -Dtest=SuiteTestes
 ```
 
 Os screenshots de cada execução são salvos em `target/screenshot/`, nomeados automaticamente com o nome do método de teste.
+
+---
+
+## 📄 Sobre os arquivos HTML de treino
+
+Os arquivos usados como aplicação de treino nos testes,fazem parte do material didático — por isso **não são versionados neste repositório** .
+
+O foco deste projeto é demonstrar a **arquitetura de automação** (Page Object, DSL, Factory Pattern, boas práticas de Java) — não o material de treino em si, que permanece de uso restrito ao curso.
 
 ---
 

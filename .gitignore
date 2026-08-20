@@ -36,3 +36,7 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Material do curso (não autoral) ###
+src/main/resources/componentes.html
+src/main/resources/frame.html
