@@ -4,7 +4,6 @@ import br.ce.wcaquino.core.BaseTest;
 import br.ce.wcaquino.core.DSL;
 import br.ce.wcaquino.core.DriverFactory;
 import br.ce.wcaquino.page.CampoTreinamentoPage;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,10 +44,6 @@ public class TestesParametrizados extends BaseTest {
 
     }
 
-    @After
-    public void finalizando() {
-        DriverFactory.getDriver().quit();
-    }
 
     @Parameterized.Parameters
     public static Collection<Object[]> getColletion() {

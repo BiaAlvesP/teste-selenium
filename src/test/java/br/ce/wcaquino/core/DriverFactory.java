@@ -16,7 +16,6 @@ public class DriverFactory {
                 case FIREFOX: driver = new FirefoxDriver(); break;
                 case CHROME: driver = new ChromeDriver(); break;
             }
-            driver = new ChromeDriver();
         }
         return driver;
     }

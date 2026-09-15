@@ -4,7 +4,6 @@ import br.ce.wcaquino.core.BaseTest;
 import br.ce.wcaquino.core.DSL;
 import br.ce.wcaquino.core.DriverFactory;
 import br.ce.wcaquino.page.CampoTreinamentoPage;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,12 +19,24 @@ public class DesafioRegrasNegocio extends BaseTest {
     private DSL dsl;
 
     @Before
-    public void Iniciando() {
-        DriverFactory.getDriver().get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
-        wait = new WebDriverWait( DriverFactory.getDriver(), Duration.ofSeconds(5));
+    public void iniciando() {
+        String caminho = System.getProperty("user.dir")
+                + "/src/main/resources/componentes.html";
+
+        System.out.println("Caminho: " + caminho);
+
+        DriverFactory.getDriver().get("file:///" + caminho);
+
+        System.out.println("URL atual: " +
+                DriverFactory.getDriver().getCurrentUrl());
+
+        wait = new WebDriverWait(
+                DriverFactory.getDriver(),
+                Duration.ofSeconds(5)
+        );
+
         dsl = new DSL();
         page = new CampoTreinamentoPage();
-
     }
 
 
