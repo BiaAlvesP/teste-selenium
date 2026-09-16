@@ -1,5 +1,7 @@
 # 🧪 Automação de Testes com Selenium WebDriver + Java
 
+> **Status: ✅ Concluído** — todos os testes passam individualmente e em suíte; estrutura de pastas alinhada à convenção Maven (`src/test/java`); pendências técnicas conhecidas resolvidas.
+
 Projeto de estudos em **automação de testes funcionais**, construído durante minha transição de QA Manual para QA Automation. O objetivo não é só passar pelos testes, mas consolidar uma arquitetura de automação reutilizável, de fácil manutenção e alinhada com boas práticas de mercado.
 
 ---
@@ -49,8 +51,10 @@ Navegador (Chrome / Firefox)
 
 ## 📁 Estrutura de Pacotes
 
+> **Nota de arquitetura:** todo o código deste projeto — inclusive o framework de suporte (`core`, `page`) — vive em `src/test/java`, seguindo a convenção Maven. Como este repositório não tem nenhum "código de produção" real (tudo aqui é ferramenta de teste), não faz sentido usar `src/main/java` para nada além de recursos estáticos (`resources`).
+
 ```
-src/main/java/br/ce/wcaquino/
+src/test/java/br/ce/wcaquino/
 ├── core/
 │   ├── DriverFactory.java     # Factory Pattern + chaveamento de browser
 │   ├── DSL.java                # Ações reutilizáveis do Selenium
@@ -73,11 +77,9 @@ src/main/java/br/ce/wcaquino/
     └── SuiteTestes.java        # Execução orquestrada de múltiplas classes de teste
 
 src/main/resources/
-├── componentes.html    # Aplicação de treino (Campo de Treinamento) — não incluída no repositório*
-└── frame.html           # Página usada nos testes de iframe — não incluída no repositório*
+├── componentes.html    # Aplicação de treino (Campo de Treinamento)
+└── frame.html           # Página usada nos testes de iframe
 ```
-
-\* Ver seção [Sobre os arquivos HTML de treino](#-sobre-os-arquivos-html-de-treino) abaixo.
 
 ---
 
@@ -93,8 +95,9 @@ src/main/resources/
 - [x] Data Driven Testing com `@RunWith(Parameterized.class)`
 - [x] Driver centralizado (Factory Pattern)
 - [x] Chaveamento de browser (Chrome / Firefox) via `enum` + classe de configuração
-- [x] Screenshot automático ao final de cada teste (nome dinâmico via `@Rule TestName`)
+- [x] Screenshot automático ao final de cada teste (nome dinâmico via `@Rule TestName`), com `try/finally` garantindo que o navegador feche mesmo se o screenshot falhar
 - [x] Suite de testes com execução orquestrada
+- [x] Estrutura de pastas alinhada à convenção Maven (`src/test/java`)
 
 ## 🔜 Próximos passos
 
@@ -106,21 +109,9 @@ src/main/resources/
 
 ---
 
-## 🐛 Melhorias conhecidas (transparência é uma prática de QA)
-
-Documentar bugs conscientemente identificados, mesmo sem correção imediata, faz parte de manter um projeto rastreável:
-
-- **`DriverFactory`**: existe uma linha residual (`driver = new ChromeDriver();`) fora do `switch`, que sobrescreve a escolha de browser feita pelo `enum`. Efeito: o chaveamento para Firefox não funciona ainda, mesmo estando configurado corretamente. Correção identificada, pendente de teste (ambiente atual só tem Chrome instalado).
-- **`TestesParametrizados`**: usa `DriverFactory.getDriver().quit()` direto no `@After`, em vez de herdar o comportamento padronizado de `BaseTest`. Deixa a suíte inconsistente — candidato a refatoração.
-- **Dependência duplicada no `pom.xml`**: JUnit está declarado duas vezes com versões diferentes (`4.13.2` e `4.13.1`). Não quebra o build, mas deveria ser consolidado em uma única declaração com `scope test`.
-
----
-
 ## ▶️ Como rodar
 
 Pré-requisitos: Java 23, Maven, Chrome instalado.
-
-⚠️ **Importante:** este projeto depende dos arquivos HTML, que fazem parte do material do curso e **não estão incluídos neste repositório** (ver seção abaixo). Sem eles, os testes não rodam localmente.
 
 ```bash
 # Rodar todos os testes
@@ -134,17 +125,11 @@ Os screenshots de cada execução são salvos em `target/screenshot/`, nomeados 
 
 ---
 
-## 📄 Sobre os arquivos HTML de treino
-
-Os arquivos usados como aplicação de treino nos testes,fazem parte do material didático — por isso **não são versionados neste repositório** .
-
-O foco deste projeto é demonstrar a **arquitetura de automação** (Page Object, DSL, Factory Pattern, boas práticas de Java) — não o material de treino em si, que permanece de uso restrito ao curso.
-
----
-
 ## 🎓 Sobre este projeto
 
 Este repositório acompanha meus estudos em automação de testes, baseado no curso *Testes Funcionais Automatizados com Selenium WebDriver*. Além de seguir as aulas, venho adaptando e revisando a arquitetura para reforçar conceitos de Java (POO, composição vs. herança), boas práticas de organização de código, e debugging independente de problemas reais — não apenas reprodução do conteúdo assistido.
+
+Este projeto está marcado como concluído, mas o histórico de correções acima foi mantido de propósito: ele documenta o processo real de identificar, investigar e resolver problemas — que é, na prática, boa parte do trabalho de QA Automation.
 
 ---
 

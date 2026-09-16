@@ -20,19 +20,14 @@ public class TestesFrames extends BaseTest {
     }
 
 
-
-
     @Test
     public void deveInteragirComFrames() {
 
         dsl.entrarFrame("frame1");
-
+        dsl.esperarElemento(By.id("frameButton"));
         dsl.clicar("frameButton");
-
         String msg = dsl.alertaObterTextoEAceita();
-
         Assert.assertEquals("Frame OK!", msg);
-
         dsl.sairFrame();
         dsl.escrever(By.id("elementosForm:nome"), msg);
 
@@ -40,10 +35,11 @@ public class TestesFrames extends BaseTest {
     }
 
     @Test
-    public void deveInteragirComFrameEscondido(){
+    public void deveInteragirComFrameEscondido() {
         WebElement frame = DriverFactory.getDriver().findElement(By.id("frame2"));
         dsl.executarJS("window.scrollBy(0,arguments[0])", frame.getLocation().y);
         dsl.entrarFrame("frame2");
+        dsl.esperarElemento(By.id("frameButton"));
         dsl.clicar("frameButton");
         String msg = dsl.alertaObterTextoEAceita();
         Assert.assertEquals("Frame OK!", msg);
@@ -56,9 +52,6 @@ public class TestesFrames extends BaseTest {
 
         dsl.mudarJanela("Popup");
         dsl.escrever(By.tagName("textarea"), "Deu certo?");
-
-       dsl.fecharFrame();
-
 
     }
 
